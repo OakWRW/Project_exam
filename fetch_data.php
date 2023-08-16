@@ -4,10 +4,17 @@ include "connect.php"; // เชื่อมต่อฐานข้อมูล
 
 $search_first_name = $_GET["search_first_name"];
 
-$query = "SELECT * FROM exam WHERE first_name LIKE ?";
+$query = "SELECT * FROM exam WHERE 
+              id LIKE ? OR 
+              first_name LIKE ? OR 
+              last_name LIKE ? OR 
+              email LIKE ? OR 
+              gender LIKE ? OR 
+              ip_address LIKE ? OR 
+              CONCAT(first_name, ' ', last_name) LIKE ?";
 $stmt = mysqli_prepare($connection, $query);
 $search_term = '%' . $search_first_name . '%';
-mysqli_stmt_bind_param($stmt, "s", $search_term);
+mysqli_stmt_bind_param($stmt, "sssssss", $search_term, $search_term, $search_term, $search_term, $search_term, $search_term, $search_term);
 mysqli_stmt_execute($stmt);
 
 $result = mysqli_stmt_get_result($stmt);
